@@ -11,7 +11,7 @@ from email.mime.image import MIMEImage
 
 class MailSender():
 
-    def __init__(self, mailSenderName, mailPassword, smtpHost, smtpPort, logger=None, userName=None, isSecure=True):
+    def __init__(self, mailSenderName, mailPassword, smtpHost, smtpPort, userName=None, isSecure=True):
         '''
         Mail sender assumes that Twisted reactor has already been running.
         '''
@@ -21,11 +21,10 @@ class MailSender():
         self.smtpHost = smtpHost
         self.smtpPort = int(smtpPort)
         self.isSecure = isSecure
-        self.myLogger.info("MailSender init.")
 
     def sendMail(self, subject, content, toWhom, file2Send=None, fileName=None, callback=None, errBack=None):
         result = self.send(subject, content, toWhom, file2Send, fileName)
-        self.myLogger.info("%s | %s | %s" % (subject, content, toWhom))
+        print("%s | %s | %s" % (subject, content, toWhom))
         if callback and errBack:
             return result.addCallbacks(callback, errBack)
         else:
@@ -77,7 +76,7 @@ class MailSender():
         return resultDeferred
 
     def cbSentMessage(self, result):
-        self.myLogger.info("Mail is sent.")
+        print("Mail is sent.")
 
     def ebSentMessage(self, err):
-        self.myLogger.info("Error occured while sending mail: %s", err)
+        print("Error occured while sending mail: %s", err)
